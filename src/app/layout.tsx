@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { usePathname } from 'next/navigation';
-import Header from '@/components/header/header';
 import { Provider } from "react-redux";
 import store from "@/store/store";
+import ClientHeader from '@/components/header/client-header'; // Импорт клиентского компонента
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,13 +14,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const pathname = usePathname();
-
   return (
     <Provider store={store}>
       <html lang="ru">
         <body>
-          {pathname !== '/register' && <Header />}
+          <ClientHeader />
           {children}
           <div id="modal-root"></div>
         </body>
