@@ -9,11 +9,29 @@ import ErrorMessage from '@/components/error-message/error-message';
 import { useRouter } from 'next/navigation';
 import { UserState } from '@/types/types';
 
-// Схема валидации для yup
+// схема валидации для yup
 const schema = yup.object().shape({
-  name: yup.string().required("Имя обязательно"),
-  email: yup.string().email("Некорректный email").required("Email обязателен"),
-  password: yup.string().min(6, "Минимум 6 символов").required("Пароль обязателен"),
+  name: yup
+    .string()
+    .matches(/^[A-Za-zА-Яа-яЁё\s]+$/, "Имя может содержать только буквы и пробелы")
+    .test("no-multiple-spaces", "Имя не должно содержать двойные пробелы", value => value ? !/\s{2,}/.test(value) : true)
+    .min(2, "Имя должно содержать минимум 2 символа")
+    .max(30, "Имя не должно превышать 30 символов")
+    .required("Имя обязательно"),
+
+  email: yup
+    .string()
+    .email("Некорректный email")
+    .max(30, "Email не должен превышать 30 символов")
+    .matches(/^([^@]*)@([^@]*)$/, "Email должен содержать только один знак '@'")
+    .required("Email обязателен"),
+
+  password: yup
+    .string()
+    .min(6, "Минимум 6 символов")
+    .max(30, "Пароль не должен превышать 30 символов")
+    .matches(/^\S*$/, "Пароль не должен содержать пробелы")
+    .required("Пароль обязателен"),
 });
 
 const Register: NextPage = () => {
@@ -39,7 +57,7 @@ const Register: NextPage = () => {
       <h2 className="text-2xl font-semibold">Регистрация</h2>
       <form 
         onSubmit={handleSubmit(onSubmit)}
-        className='flex flex-col items-start gap-3'
+        className='flex flex-col justify-center gap-3 w-[40%] ml-[21%]'
       >
         <div className='flex flex-col'>
           <label>Имя</label>

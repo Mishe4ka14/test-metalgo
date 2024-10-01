@@ -25,6 +25,7 @@ export default function RootLayout({
         <body>
           {pathname !== '/register' && <Header />}
           {children}
+          <div id="modal-root"></div>
         </body>
       </html>
     </Provider>

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
 import { ICard } from '@/types/types';
+import formatTime from '@/hooks/format-time';
+import { v4 as uuidv4 } from 'uuid'; 
 
 interface CardState {
   cards: ICard[];
@@ -15,10 +16,27 @@ const cardSlice = createSlice({
   initialState,
   reducers: {
     addCard(state, action: PayloadAction<ICard>) {
-      state.cards.push(action.payload);
+        const newCard = {
+          id: uuidv4(),
+          title: action.payload.title,
+          description: action.payload.description,
+          completed: false,
+          date: formatTime(new Date()),
+        };
+        state.cards.push(newCard);
     },
-    removeCard(state, action: PayloadAction<number>) {
-      state.cards = state.cards.filter(card => card.id !== action.payload);
+    changeCard: (state, action: PayloadAction<{id: string, title: string, description: string}>) => {
+      const index = state.cards.findIndex(card => card.id === action.payload.id);
+      if (index !== -1) {
+        state.cards[index] = {
+          ...state.cards[index],
+          title: action.payload.title,
+          description: action.payload.description,
+        };
+    }
+    },
+    removeCard(state, action: PayloadAction<string>) {
+      state.cards = state.cards.filter(card => card.id !== `${action.payload}`);
     },
     clearCard(state) {
       state.cards = [];
@@ -26,5 +44,5 @@ const cardSlice = createSlice({
   },
 });
 
-export const { addCard, removeCard, clearCard } = cardSlice.actions;
+export const { addCard, removeCard, clearCard, changeCard } = cardSlice.actions;
 export default cardSlice.reducer;

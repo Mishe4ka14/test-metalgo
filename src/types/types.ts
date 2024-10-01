@@ -1,7 +1,8 @@
 export interface ICard {
-  id: number;
+  id: string;
   title: string;
   description: string;
+  date?: string;
 }
 
 export interface UserState {
