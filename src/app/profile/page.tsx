@@ -1,6 +1,7 @@
 'use client';
 
 import Button from '@/components/button/button';
+import Header from '@/components/header/header';
 import Modal from '@/components/modal/modal';
 import UserCard from '@/components/user-card/user-card';
 import { addCard, changeCard } from '@/feature/cardSlicer';
@@ -69,47 +70,50 @@ const Profile: NextPage = () => {
   }
 
   return (
-    <section className='flex flex-col pr-[6%] pl-[6%] gap-5 bg-[#82d2ef]'>
-      <div className='flex justify-between items-center'>
-        <div>
-          <h3 className='text-xl font-bold'>Данные пользователя</h3>
-          <div className='flex gap-2'>
-            <h4>Имя:</h4>
-            <p>{user.name}</p>
-          </div>
-          <div className='flex gap-2'>
-            <h4>Email:</h4>
-            <p>{user.email}</p>
-          </div>
-          <div 
-            className='flex gap-2'
-            onMouseEnter={() => setShowPassword(true)} 
-            onMouseLeave={() => setShowPassword(false)} 
-          >
-            <h4>Пароль:</h4>
-            <p>{showPassword ? user.password : '*'.repeat(user.password.length)}</p>
-          </div>
-        </div>  
-        <Button large={false} onClick={handleAddTask}>Добавить</Button>
-      </div>
-      <ul className='flex flex-col justify-center items-center'>
-        {cardItems.length ? cardItems.map((item, index) => (
-          <UserCard
-            key={item.id}
-            card={item}
-            index={index}
-            onItemClick={() => handleItemClick(item)}
+    <>
+      <Header/>
+      <section className='flex flex-col pr-[6%] pl-[6%] gap-5 bg-[#82d2ef]'>
+        <div className='flex justify-between items-center'>
+          <div>
+            <h3 className='text-xl font-bold'>Данные пользователя</h3>
+            <div className='flex gap-2'>
+              <h4>Имя:</h4>
+              <p>{user.name}</p>
+            </div>
+            <div className='flex gap-2'>
+              <h4>Email:</h4>
+              <p>{user.email}</p>
+            </div>
+            <div 
+              className='flex gap-2'
+              onMouseEnter={() => setShowPassword(true)} 
+              onMouseLeave={() => setShowPassword(false)} 
+            >
+              <h4>Пароль:</h4>
+              <p>{showPassword ? user.password : '*'.repeat(user.password.length)}</p>
+            </div>
+          </div>  
+          <Button large={false} onClick={handleAddTask}>Добавить</Button>
+        </div>
+        <ul className='flex flex-col justify-center items-center'>
+          {cardItems.length ? cardItems.map((item, index) => (
+            <UserCard
+              key={item.id}
+              card={item}
+              index={index}
+              onItemClick={() => handleItemClick(item)}
+            />
+          )) : null}
+        </ul>
+        {isModalOpen && (
+          <Modal
+            onClose={() => setIsModalOpen(false)}
+            onSave={handleSave}
+            card={currentCard}
           />
-        )) : null}
-      </ul>
-      {isModalOpen && (
-        <Modal
-          onClose={() => setIsModalOpen(false)}
-          onSave={handleSave}
-          card={currentCard}
-        />
-      )}
-    </section>
+        )}
+      </section>
+    </>
   );
 };
 

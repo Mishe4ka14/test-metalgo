@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Provider } from "react-redux";
-import store from "@/store/store";
-import ClientHeader from '@/components/header/client-header'; // Импорт клиентского компонента
+import StoreProvider from "@/app/store-provider/store-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,14 +13,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Provider store={store}>
+    <StoreProvider>
       <html lang="ru">
         <body>
-          <ClientHeader />
           {children}
           <div id="modal-root"></div>
         </body>
       </html>
-    </Provider>
+    </StoreProvider>
   );
 }
