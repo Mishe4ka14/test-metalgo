@@ -3,19 +3,19 @@ import Button from '@/components/button/button';
 import { clearCard } from '@/feature/cardSlicer';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-const Header: NextPage = () => {
+const Header: NextPage = React.memo(() => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [tooltipVisible, setTooltipVisible] = useState(false); // состояние для подсказки
   
-  const handleLogout = (): void => {
+  const handleLogout = useCallback((): void => {
     sessionStorage.removeItem('userData');
     dispatch(clearCard());
     router.push('/register');
-  };
+  }, [dispatch, router]);
 
   return (
     <header className="flex justify-between items-center bg-[#1A1A2E] px-[5vw] py-2 rounded-md">
@@ -34,6 +34,6 @@ const Header: NextPage = () => {
         </span>
     </header>
   );
-};
+});
 
 export default Header;
