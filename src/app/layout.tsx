@@ -1,5 +1,11 @@
+'use client'
+
 import type { Metadata } from "next";
 import "./globals.css";
+import { usePathname } from 'next/navigation';
+import Header from '@/components/header/header';
+import { Provider } from "react-redux";
+import store from "@/store/store";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -11,12 +17,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const pathname = usePathname();
+
   return (
-    <html lang="en">
-      <body>
-        {/* <header>Это хедер!!!</header> */}
-        {children}
-      </body>
-    </html>
+    <Provider store={store}>
+      <html lang="ru">
+        <body>
+          {pathname !== '/register' && <Header />}
+          {children}
+        </body>
+      </html>
+    </Provider>
   );
 }
